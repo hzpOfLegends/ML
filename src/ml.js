@@ -4,34 +4,22 @@ ML.install = function (Vue, options) {
     constructor(_val, _kind = "ch", _obj = {}) {
       this._val = _val
       this._kind = _kind;
-      this._obj = _obj;
-      this.lock = new Proxy({
-        default_lock : false
-      },{
-        get:function(val){
-          return val
-        },
-        set:function(val){
-        }
-      }) // 在此操作做个锁是为了保证 用户必须仙设定 默认配置 （初始化）
+      this._obj = _obj ;
+      this.lock = false ;// 在此操作做个锁是为了保证 用户必须仙设定 默认配置 （初始化）
     }
     // 默认语言配置 （初始化）
     default_config(_kind = "ch", _obj) {
       let _language_kinds = this.verify_library(_obj)
-      let _verify_language = this.verify_language(_kind, _language_kinds)
-      _verify_language.then((val) => {
-        this.lock = true
-        return Promise.resolve()
-      })
+       this.verify_language(_kind, _language_kinds)
+      // _verify_language.then((val) => {
+      //   this.lock = true
+      //   return Promise.resolve()
+      // })
     }
     // 传值
     ML(_val) {
       this._val = _val
-      if (this.lock) {
-          return this.search_language(this._val,this._kind,this._obj)
-      } else {
-        new Error('请先初始化')
-      }
+      return this.search_language(this._val,this._kind,this._obj)
     }
     // 搜索语言库 找出对应 值
     search_language(_val,_kind,_obj){
