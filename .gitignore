@@ -1,0 +1,18 @@
+.DS_Store
+node_modules/
+font_end_hzp@163.com/
+font_end_hzp@163.com.pub/
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/test/e2e/reports/
+selenium-debug.log
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
