@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>{{$ml.ML("黄泽平")}}</h1>
+    <h1 v-ml:foo.a.b="'s'">{{$ml.ML("黄泽平")}}</h1>
     <h2>Essential Links</h2>
     <button @click="set">修改</button>
   </div>

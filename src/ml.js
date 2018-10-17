@@ -29,23 +29,18 @@ ML.install = function (Vue, options) {
       this._val = _val
       if (this.lock) {
           return this.search_language(this._val,this._kind,this._obj)
-          // console.log(this.search_language(this._val,this._kind,this._obj))
-          // console.log(1, _val)
-          // console.log(2, this._kind)
-          // console.log(3, this._obj)
-          
-        
       } else {
         new Error('请先初始化')
       }
     }
     // 搜索语言库 找出对应 值
     search_language(_val,_kind,_obj){
-        for(let item in _obj[_kind]){
-          if(_obj[_kind][item] == _val){
-            return(_obj[_kind][item])
-          }
+      // 此处_obj["ch"] 必须用户输入中文 然后根据 _type 来修改  --待修改
+      for(let item in _obj["ch"]){
+        if(_obj["ch"][item] == _val){
+          return this._obj[this._kind][item]
         }
+      }
     }
     // 切换语言
     cut_language(_val,_kind,_obj){
@@ -65,14 +60,12 @@ ML.install = function (Vue, options) {
     verify_language(_kind, _language_kinds) {
       if (_kind && _language_kinds) {
         typeof _kind === "string" ? _kind : String(_kind)
-        for (let key of _language_kinds) {
-          if (key === _kind) {
+          if (_language_kinds.has(_kind)) {
             this._kind = _kind
             return Promise.resolve(_kind)
           } else {
             return Promise.reject('语言类型要与你的语言库的key相匹配')
           }
-        }
       } else {
         new Error('verify_language is error')
       }
@@ -107,6 +100,14 @@ ML.install = function (Vue, options) {
       })
     }
   }
+  Vue.directive('ml',{
+    bind:function(el, binding, vnode){
+      console.log(el,binding,vnode)
+    },
+    update:function(el, binding, vnode){
+      console.log(el,binding,vnode)
+    },
+  })
   Vue.prototype.$ml = new $ml()
 
 }
