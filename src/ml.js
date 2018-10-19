@@ -1,25 +1,37 @@
 var ML = {}
 ML.install = function (Vue, options) {
+  let a = new Vue({data:{body:"123"}})
   class $ml {
     constructor(_val, _kind = "ch", _obj = {}) {
       this._val = _val
-      this._kind = _kind;
-      this._obj = _obj ;
-      this.lock = false ;// 在此操作做个锁是为了保证 用户必须仙设定 默认配置 （初始化）
+      this._kind = _kind
+      this._obj = _obj 
+      this.lock = false // 在此操作做个锁是为了保证 用户必须仙设定 默认配置 （初始化）
+      this.test = {}
     }
     // 默认语言配置 （初始化）
     default_config(_kind = "ch", _obj) {
       let _language_kinds = this.verify_library(_obj)
-       this.verify_language(_kind, _language_kinds)
+      this.verify_language(_kind, _language_kinds)
       // _verify_language.then((val) => {
       //   this.lock = true
       //   return Promise.resolve()
       // })
+      this.test = new Proxy({a:1},{
+        get:function(val){
+          return val
+        },
+        set:function(val){
+          a.body = val
+        }
+      })
     }
     // 传值
     ML(_val) {
       this._val = _val
-      return this.search_language(this._val,this._kind,this._obj)
+      // return this.search_language(this._val,this._kind,this._obj)
+      console.log(a)
+      return a.body
     }
     // 搜索语言库 找出对应 值
     search_language(_val,_kind,_obj){
@@ -32,11 +44,14 @@ ML.install = function (Vue, options) {
     }
     // 切换语言
     cut_language(_val,_kind,_obj){
-      for(let item in _obj[this._kind]){
-        if(_obj[this._kind][item] == _val){
-          return _obj[_kind][item]
-        }
-      }
+      a.$set(a,'body',3)
+      console.log(1,a)
+      this.ML()
+      // for(let item in _obj[this._kind]){
+      //   if(_obj[this._kind][item] == _val){
+      //     return _obj[_kind][item]
+      //   }
+      // }
     }
     set_language(_kind) {
       // console.log(11,this.search_language(this._val,_kind,this._obj))
@@ -50,9 +65,9 @@ ML.install = function (Vue, options) {
         typeof _kind === "string" ? _kind : String(_kind)
           if (_language_kinds.has(_kind)) {
             this._kind = _kind
-            return Promise.resolve(_kind)
+            return _kind
           } else {
-            return Promise.reject('语言类型要与你的语言库的key相匹配')
+            return new Error ('语言类型要与你的语言库的key相匹配')
           }
       } else {
         new Error('verify_language is error')
@@ -88,6 +103,7 @@ ML.install = function (Vue, options) {
       })
     }
   }
+  
   Vue.directive('ml',{
     bind:function(el, binding, vnode){
       console.log(el,binding,vnode)
@@ -97,6 +113,15 @@ ML.install = function (Vue, options) {
     },
   })
   Vue.prototype.$ml = new $ml()
+  // Vue.prototype.$m
+  // Object.defineProperty(Vue.prototype,'$t',{
+  //   get:function get(val){
+  //     return function(val){
+  //       a.$set(a,'body',this.$ml.test.a)
+  //       console.log()
 
+  //     }
+  //   }
+  // })
 }
 module.exports = ML;

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <h1 v-ml:foo.a.b="'s'">{{$ml.ML("黄泽平")}}</h1>
-    <h2>Essential Links</h2>
+    <h1>{{$ml.ML("黄泽平")}}</h1>
+    <!-- <h2>{{$test.a("123")}}</h2> -->
     <button @click="set">修改</button>
   </div>
 </template>
@@ -24,6 +24,9 @@ export default {
   methods:{
     set(){
       this.$ml.set_language("en")
+      // this.$t('mes.as')
+      // console.log(this.$ml.ML('黄泽平'))
+      console.log(void 0)
     }
   },
   mounted(){

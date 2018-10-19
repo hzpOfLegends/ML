@@ -2,11 +2,14 @@ import Vue from 'vue'
 import App from './App.vue'
 import ML from './ml.js'
 Vue.use(ML)
-
-// 
+// import test from './test.js'
+// Vue.use(test)
 new Vue({
   el: '#app',
-  render: h => h(App),
+  components: {
+    App
+  },
+  template: '<App/>',
   created(){
     let o = {
       ch:{
