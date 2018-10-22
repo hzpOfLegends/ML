@@ -26,28 +26,32 @@ ML.install = function (Vue, options) {
     ML(_val) {
       this._val = _val
       if(this.change){
-        return  V._message
+        return  V.$data._message
       }else{
+        // this.search_language
         // console.log(this.prevent_n_update(V.$data._message,this.search_language(this._val,this._kind,V.$data._library)))
-        // if(this.prevent_n_update(V.$data._message,this.search_language(this._val,this._kind,V.$data._library))){
-        //   let val = this.search_language(this._val,this._kind,V.$data._library)
-
-        //   V.$data._message.push(val)  
-        // }
+        console.log(2,this.search_language(this._val,this._kind,V.$data._library))
+        if(this.prevent_n_update(V.$data._message,this.search_language(this._val,this._kind,V.$data._library))){
+          let val = this.search_language(this._val,this._kind,V.$data._library)
+          V.$data._message.push(val)
+        }
         // console.log(1,V)
         // return V._message
       }
     }
     // 防止组件呈现函数中可能有无限的更新循环
     prevent_n_update(val,substance){
-      if(val){
+      if(val.length != 0){
         for(let i = 0 ; i<=val.length ; i++){
-          if(val[i] === substance){
-            return false
-          }else{
-            return true
-          }
+          // if(val[i][keyValue].get(val[i][item]) === substance){
+          //   return false
+          // }else{
+          //   return true
+          // }
         }
+      }else{
+        console.log(1,substance)
+        
       }
     }
     // 搜索语言库 找出对应 值
@@ -55,8 +59,10 @@ ML.install = function (Vue, options) {
       for(let item in _obj[_kind]){
         if(_obj[_kind][item] == _val){
           let keyValue = new Map()
+          let o = {}
           keyValue.set(item,_obj[_kind][item])
-          return keyValue
+          o = {keyValue,item}
+          return o
         }
       }
     }
