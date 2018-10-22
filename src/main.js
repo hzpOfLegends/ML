@@ -19,7 +19,7 @@ new Vue({
       },
       en:{
         name:"hazzy",
-        age : 18 ,
+        age : 'one' ,
         height : 190
       }
     }

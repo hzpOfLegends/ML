@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <h1>{{$ml.ML("黄泽平")}}</h1>
+    <!-- <h2>{{$ml.ML("18")}}</h2> -->
     <!-- <h2>{{$test.a("123")}}</h2> -->
     <button @click="set">修改</button>
   </div>
@@ -24,12 +25,12 @@ export default {
   methods:{
     set(){
       this.$ml.set_language("en")
-      // this.$t('mes.as')
-      // console.log(this.$ml.ML('黄泽平'))
-      console.log(void 0)
+      // console.log(2,this.$ml.ML("黄泽平"))
     }
   },
   mounted(){
+
+    // console.log(1,this.$ml.ML("黄泽平"))
     // this.a =  
     // console.log(2,this.$ml.ML(190))
     // let a = {

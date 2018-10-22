@@ -1,3 +1,4 @@
 module.exports = {
-    name:"hazzy"
+    name:"hazzy",
+    age: 13
 }

@@ -1,69 +1,87 @@
 var ML = {}
 ML.install = function (Vue, options) {
-  let a = new Vue({data:{body:"123"}})
+  // vue 实例
+  let V = new Vue({data:{_kind:"",_message:[],_library:{}}})
   class $ml {
     constructor(_val, _kind = "ch", _obj = {}) {
       this._val = _val
       this._kind = _kind
       this._obj = _obj 
       this.lock = false // 在此操作做个锁是为了保证 用户必须仙设定 默认配置 （初始化）
-      this.test = {}
+      this.change = false // 此处用于初始值 和 修改值的判断
     }
     // 默认语言配置 （初始化）
     default_config(_kind = "ch", _obj) {
-      let _language_kinds = this.verify_library(_obj)
-      this.verify_language(_kind, _language_kinds)
-      // _verify_language.then((val) => {
-      //   this.lock = true
-      //   return Promise.resolve()
-      // })
-      this.test = new Proxy({a:1},{
-        get:function(val){
-          return val
-        },
-        set:function(val){
-          a.body = val
+      let _language_library = this.verify_library(_obj)
+      if(_language_library){
+        this._obj = _obj
+        if(this.verify_language(_kind, _language_library)){
+          // V.$set(V.$data,'_kind',_kind)
+          this._kind = _kind
+          V.$set(V.$data,'_library',this._obj)
         }
-      })
+      }
     }
     // 传值
     ML(_val) {
       this._val = _val
-      // return this.search_language(this._val,this._kind,this._obj)
-      console.log(a)
-      return a.body
+      if(this.change){
+        return  V._message
+      }else{
+        // console.log(this.prevent_n_update(V.$data._message,this.search_language(this._val,this._kind,V.$data._library)))
+        // if(this.prevent_n_update(V.$data._message,this.search_language(this._val,this._kind,V.$data._library))){
+        //   let val = this.search_language(this._val,this._kind,V.$data._library)
+
+        //   V.$data._message.push(val)  
+        // }
+        // console.log(1,V)
+        // return V._message
+      }
+    }
+    // 防止组件呈现函数中可能有无限的更新循环
+    prevent_n_update(val,substance){
+      if(val){
+        for(let i = 0 ; i<=val.length ; i++){
+          if(val[i] === substance){
+            return false
+          }else{
+            return true
+          }
+        }
+      }
     }
     // 搜索语言库 找出对应 值
     search_language(_val,_kind,_obj){
-      // 此处_obj["ch"] 必须用户输入中文 然后根据 _type 来修改  --待修改
-      for(let item in _obj["ch"]){
-        if(_obj["ch"][item] == _val){
-          return this._obj[this._kind][item]
+      for(let item in _obj[_kind]){
+        if(_obj[_kind][item] == _val){
+          let keyValue = new Map()
+          keyValue.set(item,_obj[_kind][item])
+          return keyValue
         }
       }
     }
     // 切换语言
     cut_language(_val,_kind,_obj){
-      a.$set(a,'body',3)
-      console.log(1,a)
-      this.ML()
-      // for(let item in _obj[this._kind]){
-      //   if(_obj[this._kind][item] == _val){
-      //     return _obj[_kind][item]
-      //   }
-      // }
+      for(let item in _obj[this._kind]){
+        if(_obj[this._kind][item] == _val){
+          this.change = true 
+          V.$set(V,'_message',_obj[_kind][item])
+        }
+      }
     }
+    // 用户设置语言种类
     set_language(_kind) {
       // console.log(11,this.search_language(this._val,_kind,this._obj))
       this._val = this.cut_language(this._val,_kind,this._obj)
       this._kind = _kind
+      this.change = true 
       this.ML(this._val)
     }
     // 验证用户传入的语言与他传入的语言库 是否配对
-    verify_language(_kind, _language_kinds) {
-      if (_kind && _language_kinds) {
+    verify_language(_kind, _language_library) {
+      if (_kind && _language_library) {
         typeof _kind === "string" ? _kind : String(_kind)
-          if (_language_kinds.has(_kind)) {
+          if (_language_library.has(_kind)) {
             this._kind = _kind
             return _kind
           } else {
@@ -96,11 +114,6 @@ ML.install = function (Vue, options) {
       } else {
         new Error('请传入语言库')
       }
-    }
-    prop_value(value) {
-      this.set_language().then(val => {
-
-      })
     }
   }
   
