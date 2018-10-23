@@ -12,16 +12,8 @@ new Vue({
   template: '<App/>',
   created(){
     let o = {
-      ch:{
-        name:"黄泽平",
-        age : 18 ,
-        height : 190
-      },
-      en:{
-        name:"hazzy",
-        age : 'one' ,
-        height : 190
-      }
+      ch:['黄泽平','18','篮球'],
+      en:['hazzy','18','basketball']
     }
     this.$ml.default_config("ch",o)
   }
